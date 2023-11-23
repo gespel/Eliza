@@ -14,6 +14,7 @@ fn main() {
     }
     else if args[1] == "server" {
         let s: ElizaServer = ElizaServer::new();
+        let err = s.start_server();
     }
     else {
 
