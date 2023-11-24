@@ -2,7 +2,7 @@ mod elizaserver;
 mod elizahead;
 
 use std::env;
-use log::{info, warn};
+use log::{error, info, warn};
 use elizahead::eliza_head::ElizaHead;
 use elizaserver::eliza_server::ElizaServer;
 
@@ -18,7 +18,6 @@ fn main() {
         let err = s.start_server();
     }
     else {
-
+        error!("No argument given!");
     }
-    println!("{}", args[0]);
 }
