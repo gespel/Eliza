@@ -1,10 +1,10 @@
-mod eliza_server;
-mod eliza_head;
+mod elizaserver;
+mod elizahead;
 
 use std::env;
 use log::{info, warn};
-use crate::eliza_head::ElizaHead;
-use crate::eliza_server::ElizaServer;
+use elizahead::eliza_head::ElizaHead;
+use elizaserver::eliza_server::ElizaServer;
 
 fn main() {
     info!("Eliza version v0.01");
@@ -14,6 +14,7 @@ fn main() {
     }
     else if args[1] == "server" {
         let s: ElizaServer = ElizaServer::new();
+        s.start_comm_thread().unwrap();
         let err = s.start_server();
     }
     else {
