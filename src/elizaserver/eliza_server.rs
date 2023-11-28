@@ -52,7 +52,7 @@ impl ElizaServer {
     }
 
     pub fn start_comm_thread(&self) -> Result<(), ParseIntError> {
-        let hc = head_communicator::ComThread::new();
+        let hc = head_communicator::ComThread::new(&self.config);
         hc.run();
         Ok(())
     }

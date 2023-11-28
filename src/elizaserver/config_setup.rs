@@ -7,8 +7,8 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub(crate) struct ServerConfig {
-    head_ip: std::string::String,
-    head_port: i16
+    pub(crate) head_ip: std::string::String,
+    pub(crate) head_port: i16
 }
 
 pub(crate) fn setup_config() -> ServerConfig {
@@ -33,6 +33,10 @@ pub(crate) fn setup_config() -> ServerConfig {
             .read_line(&mut port_input)
             .expect("Error while reading from stdin!");
 
+        ip_input = ip_input.trim_end().parse().unwrap();
+        port_input = port_input.trim_end().parse().unwrap();
+
+        println!("entered {}:{}", ip_input, port_input);
         let x = ServerConfig {
             head_ip: ip_input,
             head_port: port_input.parse::<i16>().unwrap(),
