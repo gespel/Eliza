@@ -7,20 +7,23 @@ use std::thread::sleep;
 use std::time::Duration;
 
 pub struct ElizaHead {
-
+    head_port: i16
 }
 
 impl ElizaHead {
     pub fn new() -> ElizaHead {
         info!("ElizaHead server is starting...");
-        ElizaHead {
 
+
+
+        ElizaHead {
+            head_port: 7878
         }
     }
 
     pub fn start(&self) {
 
-        let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
+        let listener = TcpListener::bind(format!("0.0.0.0:{}", self.head_port)).unwrap();
         info!("started.");
         for stream in listener.incoming() {
             match stream {
@@ -48,7 +51,7 @@ impl ElizaHead {
                 println!("Received message: {}", received_message);
 
                 // Sende eine Antwort an den Client
-                let response = "Hello from server!";
+                let response = "jobs test tester stenstester";
                 stream.write_all(response.as_bytes()).unwrap();
 
                 sleep(Duration::from_secs(1));

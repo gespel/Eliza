@@ -8,7 +8,8 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize)]
 pub(crate) struct ServerConfig {
     pub(crate) head_ip: std::string::String,
-    pub(crate) head_port: i16
+    pub(crate) head_port: i16,
+    pub(crate) node_name: std::string::String,
 }
 
 pub(crate) fn setup_config() -> ServerConfig {
@@ -24,6 +25,7 @@ pub(crate) fn setup_config() -> ServerConfig {
         warn!("Config file not found! Creating new config now...");
         let mut ip_input = String::new();
         let mut port_input = String::new();
+        let mut node_name_input = String::new();
         println!("Enter head ip: ");
         io::stdin()
             .read_line(&mut ip_input)
@@ -32,14 +34,20 @@ pub(crate) fn setup_config() -> ServerConfig {
         io::stdin()
             .read_line(&mut port_input)
             .expect("Error while reading from stdin!");
+        println!("Enter a name for this node: ");
+        io::stdin()
+            .read_line(&mut node_name_input)
+            .expect("Error while reading from stdin!");
 
         ip_input = ip_input.trim_end().parse().unwrap();
         port_input = port_input.trim_end().parse().unwrap();
+        node_name_input = node_name_input.trim_end().parse().unwrap();
 
         println!("entered {}:{}", ip_input, port_input);
         let x = ServerConfig {
             head_ip: ip_input,
             head_port: port_input.parse::<i16>().unwrap(),
+            node_name: node_name_input
         };
         let toml_string = toml::to_string(&x).expect("Error while creating toml string!");
         let mut file = File::create("server_config.toml").expect("Error while creating config file!");
