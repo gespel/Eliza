@@ -5,6 +5,9 @@ use std::{
 };
 use std::thread::sleep;
 use std::time::Duration;
+use actix_web::guard::Head;
+use crate::elizahead::api;
+use crate::elizahead::api::{HeadAPI};
 
 pub struct ElizaHead {
     head_port: i16
@@ -13,7 +16,8 @@ pub struct ElizaHead {
 impl ElizaHead {
     pub fn new() -> ElizaHead {
         info!("ElizaHead server is starting...");
-
+        let ha = HeadAPI::new();
+        ha.run();
 
 
         ElizaHead {
@@ -44,24 +48,22 @@ impl ElizaHead {
         info!("Received connect!");
         let mut buffer = [0; 1024];
 
-        match stream.read(&mut buffer) {
-            Ok(_) => {
-                // Verarbeite die empfangene Nachricht
-                let received_message = String::from_utf8_lossy(&buffer);
-                println!("Received message: {}", received_message);
+        stream.read(&mut buffer).unwrap();
 
-                // Sende eine Antwort an den Client
-                let response = "jobs test tester stenstester";
-                stream.write_all(response.as_bytes()).unwrap();
+        // Verarbeite die empfangene Nachricht
+        let received_message = String::from_utf8_lossy(&buffer);
+        println!("Received message: {}", received_message);
 
-                sleep(Duration::from_secs(1));
+        // Sende eine Antwort an den Client
+        let response = "jobs test tester stenstester";
+        stream.write_all(response.as_bytes()).unwrap();
+
+        sleep(Duration::from_secs(1));
 
 
-                stream.shutdown(std::net::Shutdown::Both).unwrap();
-            }
-            Err(e) => {
-                println!("Error reading from client: {}", e);
-            }
-        }
+        stream.shutdown(std::net::Shutdown::Both).unwrap();
+
+
+
     }
 }

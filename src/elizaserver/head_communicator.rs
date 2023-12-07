@@ -46,8 +46,8 @@ impl ComThread {
                     "jobs" => {
                         words.remove(0);
                         for job in words {
-
-                            ComThread::handle_received_job(job, &mut stream);
+                            ComThread::get_job(ct, job);
+                            //ComThread::handle_received_job(job, &mut stream);
                         }
                     }
                     _ => {}
@@ -63,6 +63,10 @@ impl ComThread {
                 ComThread::worker_request(ct);
             }
         }
+    }
+
+    fn get_job(ct: &ComThread, job: &str) {
+        println!("JOB CALLED");
     }
 
     fn handle_received_job(jobname: &str, stream: &mut TcpStream) {
