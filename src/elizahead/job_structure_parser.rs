@@ -29,7 +29,7 @@ impl Job {
         
     }
 
-    fn parse_job(&self) {
+    fn parse_job_folder(&self) {
         let basepath = format!("jobs/{}", self.name);
 
         if let Ok(entries) = fs::read_dir(&basepath) {
